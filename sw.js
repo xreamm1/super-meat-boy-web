@@ -1,7 +1,7 @@
-const CACHE='smb-shell-20261111-12';
+const CACHE='smb-shell-20261111-13';
 const DATA_CACHE='smb-assets-v1';
 const SCOPE=new URL('./',self.location.href).pathname;
-const SHELL=['./','index.html','style.css','app.js','storage.js','importer.js','input.js','fonts/pixel.ttf'];
+const SHELL=['./','index.html','style.css','app.js','storage.js','importer.js','input.js','fonts/pixel.ttf','assets/nugget-pixel.png','assets/wasm-pixel.svg'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('smb-shell-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 function isolated(response){const headers=new Headers(response.headers);headers.set('Cross-Origin-Opener-Policy','same-origin');headers.set('Cross-Origin-Embedder-Policy','require-corp');headers.set('Cross-Origin-Resource-Policy','same-origin');return new Response(response.body,{status:response.status,statusText:response.statusText,headers});}
