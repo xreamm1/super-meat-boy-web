@@ -1,16 +1,28 @@
 const originalPrint=Module.print;
-Module.print=function(...args){originalPrint(...args);const line=args.join(' ');SMBRuntime.logs.push(line);if(SMBRuntime.logs.length>80)SMBRuntime.logs.shift();if(line.startsWith('Launching '))SMBRuntime.send('phase',{phase:'wine'});if(line.startsWith('Creating Texture Package:'))SMBRuntime.send('game-file',{name:line.slice(26)});if(line==='Creating Texture Package: pc/Menus/portal.tp')SMBRuntime.assetsLoaded=true;if(SMBRuntime.assetsLoaded&&line.startsWith('[MIPS]')&&!SMBRuntime.ready){SMBRuntime.ready=true;SMBRuntime.send('ready');}};
+Module.print=function(...args){originalPrint(...args);const line=args.join(' ').replace(/\0/g,'').trim();SMBRuntime.logs.push(line);if(SMBRuntime.logs.length>80)SMBRuntime.logs.shift();if(line.startsWith('Launching '))SMBRuntime.send('phase',{phase:'wine'});if(line.startsWith('Creating Texture Package:'))SMBRuntime.send('game-file',{name:line.slice(26)});if(line==='Creating Texture Package: pc/Menus/portal.tp')SMBRuntime.assetsLoaded=true;if(SMBRuntime.assetsLoaded&&line.startsWith('[MIPS]')&&!SMBRuntime.ready){SMBRuntime.ready=true;SMBRuntime.send('ready');}};
 const originalErr=Module.printErr;
-Module.printErr=function(...args){originalErr(...args);const line=args.join(' ');if(/Aborted|out of memory|RuntimeError|unreachable|Unhandled promise rejection/i.test(line))SMBRuntime.fail('Исполнение игры прервано',SMBRuntime.logs.join('\n')+'\n'+line);};
+Module.printErr=function(...args){originalErr(...args);const line=args.join(' ').replace(/\0/g,'').trim();if(/Aborted|out of memory|RuntimeError|unreachable|Unhandled promise rejection/i.test(line))SMBRuntime.fail('Исполнение игры прервано',SMBRuntime.logs.join('\n')+'\n'+line);};
 const originalInit=Module.onRuntimeInitialized;
-Module.onRuntimeInitialized=function(){originalInit?.();SMBRuntime.send('phase',{phase:'module'});};
+Module.onRuntimeInitialized=function(){originalInit?.();
+if(typeof boxedwinePresentCurrentWebGLFrame==='function'){
+ const present=boxedwinePresentCurrentWebGLFrame;let frames=0,start=performance.now();
+ boxedwinePresentCurrentWebGLFrame=function(...args){let result;
+ // The ST build already renders directly into the visible SDL canvas.
+ // Avoid a duplicate copy into the hidden presentation canvas; preserve offscreen paths.
+ if(typeof GL==='undefined'||GL.currentContext?.GLctx?.canvas!==Module.canvas)result=present(...args);
+ frames++;const now=performance.now();if(now-start>=1000){SMBRuntime.send('performance',{fps:Math.round(frames*1000/(now-start))});frames=0;start=now;}return result;
+ };
+}SMBRuntime.send('phase',{phase:'module'});};
 const originalBuild=buildBrowserFileSystem;
 buildBrowserFileSystem=async function(){try{const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('smb-local-v1',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});const pending=await new Promise((resolve,reject)=>{const tx=db.transaction('files');const r=tx.objectStore('files').get('pending-save');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});if(pending){await SMBRuntime.applySave(pending.files);await new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').delete('pending-save');tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});}db.close();SMBRuntime.send('phase',{phase:'saves'});originalBuild();}catch(e){SMBRuntime.fail('Не удалось восстановить сейв до запуска',e);}};
 Module.locateFile=(name)=>name;
 Module.onAbort=reason=>SMBRuntime.fail('Рантайм остановлен',reason);
-const fetchWasm=async()=>{try{const response=await fetch('boxedwine.wasm');if(!response.ok)throw Error('HTTP '+response.status);const total=Number(response.headers.get('Content-Length'));const bytes=new Uint8Array(total);let done=0;const reader=response.body.getReader();for(;;){const r=await reader.read();if(r.done)break;bytes.set(r.value,done);done+=r.value.length;SMBRuntime.send('download',{name:'boxedwine.wasm',done,total});}if(done!==total)throw Error('Неполный модуль');SMBRuntime.filesDone++;const manifest=await SMBRuntime.manifest;SMBRuntime.send('file-complete',{done:SMBRuntime.filesDone,total:manifest['game.zip'].parts.length+manifest['wine.zip'].parts.length+1});return bytes;}catch(e){SMBRuntime.fail('Не удалось загрузить WASM',e);throw e;}};
+const fetchWasm=async()=>{try{const response=await fetch('boxedwine.wasm');if(!response.ok)throw Error('HTTP '+response.status);const total=4395227;const bytes=new Uint8Array(total);let done=0;const reader=response.body.getReader();for(;;){const r=await reader.read();if(r.done)break;bytes.set(r.value,done);done+=r.value.length;SMBRuntime.send('download',{name:'boxedwine.wasm',done,total});}if(done!==total)throw Error('Неполный модуль');SMBRuntime.filesDone++;const manifest=await SMBRuntime.manifest;SMBRuntime.send('file-complete',{done:SMBRuntime.filesDone,total:manifest['game.zip'].parts.length+manifest['wine.zip'].parts.length+1});return bytes;}catch(e){SMBRuntime.fail('Не удалось загрузить WASM',e);throw e;}};
 Module.instantiateWasm=(imports,receive)=>{fetchWasm().then(bytes=>WebAssembly.instantiate(bytes,imports)).then(result=>receive(result.instance,result.module)).catch(e=>SMBRuntime.fail('Браузер не смог создать WASM-рантайм',e));return {};};
 
 const resumeAudio=()=>{const context=Module.boxedwineAudio?.context;if(context&&['suspended','interrupted'].includes(context.state))context.resume().catch(()=>{});};
 for(const event of ['pointerdown','keydown','pageshow','focus'])window.addEventListener(event,resumeAudio,true);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeAudio();});
+
+const nativeParameters=getEmulatorParams;
+getEmulatorParams=function(){const args=nativeParameters();const index=args.indexOf('/bin/wine');if(index>=0)args.splice(index,0,'-pollRate','0');return args;};
