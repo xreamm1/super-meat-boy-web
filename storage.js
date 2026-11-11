@@ -1,0 +1,4 @@
+export const DB_NAME='smb-local-v1';
+export function openDB(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore('files');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+export async function getFile(key){const db=await openDB();try{return await new Promise((resolve,reject)=>{const tx=db.transaction('files');const r=tx.objectStore('files').get(key);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}finally{db.close();}}
+export async function putFile(key,value){const db=await openDB();try{await new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').put(value,key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Запись прервана'));});}finally{db.close();}}

@@ -1,0 +1,347 @@
+{
+  "game.zip": {
+    "size": 446679574,
+    "sha256": "42aaf932dfcde4e21d18a881f787e41fd7fb0bdfe8e27806ba48ff973b55cfbf",
+    "parts": [
+      {
+        "url": "../data/v1/game-000.bin",
+        "size": 8388608,
+        "sha256": "88546a7b4ccd71d68c953a8624e971311d77a80e1e5005ccefef25560d736e0f"
+      },
+      {
+        "url": "../data/v1/game-001.bin",
+        "size": 8388608,
+        "sha256": "86d04ac2ef88bdd1cbb437c6388278793d089dc575341a49d8c08726e459d90b"
+      },
+      {
+        "url": "../data/v1/game-002.bin",
+        "size": 8388608,
+        "sha256": "715091241e5e0b6e9681612846705c9138b6a46030565a143119aefb07a08efc"
+      },
+      {
+        "url": "../data/v1/game-003.bin",
+        "size": 8388608,
+        "sha256": "dc27ad6c72f97063fb5d3204b64789a22bfe41265dc199b94b2300045fbf630f"
+      },
+      {
+        "url": "../data/v1/game-004.bin",
+        "size": 8388608,
+        "sha256": "0b2f95d6de57d3f5e452539d1032ec63957f5be1bf110c62e82cc2cfe5390918"
+      },
+      {
+        "url": "../data/v1/game-005.bin",
+        "size": 8388608,
+        "sha256": "6edd2d1140df045570dcdcb13cf5bdb6c0012e823d12634dca64284b8cdc9d6e"
+      },
+      {
+        "url": "../data/v1/game-006.bin",
+        "size": 8388608,
+        "sha256": "ca0adefde3cc3ba7ebc29ec3e3de0ebc764f5e71b18b84c3bf5f9cc50e2a97ba"
+      },
+      {
+        "url": "../data/v1/game-007.bin",
+        "size": 8388608,
+        "sha256": "d3e21c8b5504e1255df698233dc05e720f4f030d8e4e33da6515aa20eedaa6eb"
+      },
+      {
+        "url": "../data/v1/game-008.bin",
+        "size": 8388608,
+        "sha256": "a976a78e55d751b9b2cbe399d42e071bed9f1e2c500aea8d674ae9c3152d76ce"
+      },
+      {
+        "url": "../data/v1/game-009.bin",
+        "size": 8388608,
+        "sha256": "97b2c314855b8fed994cfecf5ec1b7f4a40a4963aa3d4515ad738a8dd79dd295"
+      },
+      {
+        "url": "../data/v1/game-010.bin",
+        "size": 8388608,
+        "sha256": "974de93034b7eabac8a86a3baf2bb2d006d0396ef4c3035afe3b7ebc15104535"
+      },
+      {
+        "url": "../data/v1/game-011.bin",
+        "size": 8388608,
+        "sha256": "fa5f60a99b8c8f34db74c6afc95444ba60d1c09a73e159d0cbdaf982692b5c0a"
+      },
+      {
+        "url": "../data/v1/game-012.bin",
+        "size": 8388608,
+        "sha256": "6463c190388d46b719bf794faf5fbcfa9eba20e0bd6be3f1b857735e30c5279a"
+      },
+      {
+        "url": "../data/v1/game-013.bin",
+        "size": 8388608,
+        "sha256": "db2c71bc4bff718c6f1a1d81af33a7931b4075675597fdd624113f9f37af73c3"
+      },
+      {
+        "url": "../data/v1/game-014.bin",
+        "size": 8388608,
+        "sha256": "4f892bc8b05a09a37bc8064d97dd982a7c5519b6782b3d588916091c3396cc84"
+      },
+      {
+        "url": "../data/v1/game-015.bin",
+        "size": 8388608,
+        "sha256": "5f741b3ad8aca56f3cc23eb0f61a7d2528bb6634ca3b99a3ad91d5e88fde085f"
+      },
+      {
+        "url": "../data/v1/game-016.bin",
+        "size": 8388608,
+        "sha256": "e4a1f124b81b193a6f1775c3a6cfb6775a8064b37948b93602940ff2d458518f"
+      },
+      {
+        "url": "../data/v1/game-017.bin",
+        "size": 8388608,
+        "sha256": "3e030c5cf667551e06c7fbc1f11f4630f1d8f8b699f1cb9c3beb7145967dc8d2"
+      },
+      {
+        "url": "../data/v1/game-018.bin",
+        "size": 8388608,
+        "sha256": "b3538a933ffd3d00a1b828562e8a90d174475143a5a2205098ddb724c05dbdfe"
+      },
+      {
+        "url": "../data/v1/game-019.bin",
+        "size": 8388608,
+        "sha256": "57f4f7b449aa35e5a466159d1cdc792a55ffa3a124cb3b9e3f54ef4aa9e9ccca"
+      },
+      {
+        "url": "../data/v1/game-020.bin",
+        "size": 8388608,
+        "sha256": "827088a347bf342f2ef2a469563a0240cb664c1c8879d22b718c5c28fbc356fb"
+      },
+      {
+        "url": "../data/v1/game-021.bin",
+        "size": 8388608,
+        "sha256": "128b70acbb7141863e56e108fc446e04f6140ed11010cba769f5486eda34a759"
+      },
+      {
+        "url": "../data/v1/game-022.bin",
+        "size": 8388608,
+        "sha256": "ca12ef164677d4dd3f6ae8446256ed34bb1eb995d9cd435d6fdd0d5de7bb7d5b"
+      },
+      {
+        "url": "../data/v1/game-023.bin",
+        "size": 8388608,
+        "sha256": "6b4cf4dd0ed84db11824e364608477a0389d42f7fd253289ade4dd17d1398935"
+      },
+      {
+        "url": "../data/v1/game-024.bin",
+        "size": 8388608,
+        "sha256": "c0c9ecf85c4755913882f998f3992d06c2c5f46223bc83d95e57ee3256120655"
+      },
+      {
+        "url": "../data/v1/game-025.bin",
+        "size": 8388608,
+        "sha256": "c8f51d92a61e47d064be05e05bb5875900487dc4f059b6bdecacfe45318e480e"
+      },
+      {
+        "url": "../data/v1/game-026.bin",
+        "size": 8388608,
+        "sha256": "eb34fb8251e516f2bc9822ef185f8aabd307e940e28454c79c7bef12e0425c53"
+      },
+      {
+        "url": "../data/v1/game-027.bin",
+        "size": 8388608,
+        "sha256": "3ddc0b685831ec6653ae34dff4eb061afb9f1d148de3b9f244cf60c61664dde7"
+      },
+      {
+        "url": "../data/v1/game-028.bin",
+        "size": 8388608,
+        "sha256": "67be7b0f663c355c3c81c85e6a2d6a8f23b980d899be57a93fbe6bb60374a732"
+      },
+      {
+        "url": "../data/v1/game-029.bin",
+        "size": 8388608,
+        "sha256": "845b8826fa3be636931bd9b953d04ff5ce8a4a3ab49f436c0a64a390603eb179"
+      },
+      {
+        "url": "../data/v1/game-030.bin",
+        "size": 8388608,
+        "sha256": "7deb04c03da2a1c669b2a3cd05b1dc19eeb66311031403b8ec50f25016e1ab94"
+      },
+      {
+        "url": "../data/v1/game-031.bin",
+        "size": 8388608,
+        "sha256": "f5298ccc0b327b5af00d31ba52b675ded0bd3f1c3105676d5ba7c37de7789b87"
+      },
+      {
+        "url": "../data/v1/game-032.bin",
+        "size": 8388608,
+        "sha256": "63508674f1b62cd5b307cbb643aba6aa3322347dd16c555f1a33d0752475bfaf"
+      },
+      {
+        "url": "../data/v1/game-033.bin",
+        "size": 8388608,
+        "sha256": "052c1d68ce3991a12a6a8f00b2b63264a13756dafe09971f459387908baf4bb0"
+      },
+      {
+        "url": "../data/v1/game-034.bin",
+        "size": 8388608,
+        "sha256": "a65fdcfaaddbaf59ec9464a9e037301a9da15cb8d333e656b64903e34dfb0cfe"
+      },
+      {
+        "url": "../data/v1/game-035.bin",
+        "size": 8388608,
+        "sha256": "ec5e3fa91dbe74fcc97e520de8ceba32b79d72cc76188338f329b88c388605ba"
+      },
+      {
+        "url": "../data/v1/game-036.bin",
+        "size": 8388608,
+        "sha256": "ac32a86a978890a726b4f93f263dd6703d1a73fe25a8718307f3a2b933ea6023"
+      },
+      {
+        "url": "../data/v1/game-037.bin",
+        "size": 8388608,
+        "sha256": "c23267f7953d77a1fc8ab29a3df98972b065eb115e7e1ebfdb068af943c39392"
+      },
+      {
+        "url": "../data/v1/game-038.bin",
+        "size": 8388608,
+        "sha256": "9073d96bad1a7ecfab99e0cf672e34341e60cac920059dda2fb82149b0456ffe"
+      },
+      {
+        "url": "../data/v1/game-039.bin",
+        "size": 8388608,
+        "sha256": "95ce0828cab4158cd8e3a17ae8c916b65ab35f39a89c51d9fdb815405bd7ebfd"
+      },
+      {
+        "url": "../data/v1/game-040.bin",
+        "size": 8388608,
+        "sha256": "bb017d2ce0840e95e5253db61d685c32f349719a24877361c0ecbd9cfde4967e"
+      },
+      {
+        "url": "../data/v1/game-041.bin",
+        "size": 8388608,
+        "sha256": "f652a67e5c83655945b2ef7a28bff0c11c7a5f68f0ac9d52be2db2dc7da8ab90"
+      },
+      {
+        "url": "../data/v1/game-042.bin",
+        "size": 8388608,
+        "sha256": "9307a2d4fce0a20033b5dfe4cc59f3314c230f0c8b29c85169496bf594b75879"
+      },
+      {
+        "url": "../data/v1/game-043.bin",
+        "size": 8388608,
+        "sha256": "a2e064e64534d8d4b2ebf47a892ffb471412ca205cc69a5311d16ec8b3d65beb"
+      },
+      {
+        "url": "../data/v1/game-044.bin",
+        "size": 8388608,
+        "sha256": "bce1524e45f52b60f7082f812df1010de9b5575b70ffba4ab7577fad7245812b"
+      },
+      {
+        "url": "../data/v1/game-045.bin",
+        "size": 8388608,
+        "sha256": "70e13f7cde19c697eb7a97f3161fc17c8f912ae732c6e2b4d7ccb0f8ab0af045"
+      },
+      {
+        "url": "../data/v1/game-046.bin",
+        "size": 8388608,
+        "sha256": "1853a27101829f002664016813b9ec8ae5cc3f21411e73662cabf43654360da1"
+      },
+      {
+        "url": "../data/v1/game-047.bin",
+        "size": 8388608,
+        "sha256": "58c14b23ccc60842d7a4e2b91725d7a63f4a894d78a17bae2b9ce88e06bea23c"
+      },
+      {
+        "url": "../data/v1/game-048.bin",
+        "size": 8388608,
+        "sha256": "aaf15992acc1d363b5df6dd97be3e0c353d348061d2487c83f764ed6acb7b873"
+      },
+      {
+        "url": "../data/v1/game-049.bin",
+        "size": 8388608,
+        "sha256": "d864493659cea20249d6b7c7990eb9e4aaf495c8b628568f1f3439a4ff39565b"
+      },
+      {
+        "url": "../data/v1/game-050.bin",
+        "size": 8388608,
+        "sha256": "cee56f278092cfe918b35c508a7b095fa8ce9d1f03e450b489cb70d494be15b2"
+      },
+      {
+        "url": "../data/v1/game-051.bin",
+        "size": 8388608,
+        "sha256": "1def5a6415b30d23a6a81e0e354136b2f96f6ccb9188bcdc3a956ca3065bd91d"
+      },
+      {
+        "url": "../data/v1/game-052.bin",
+        "size": 8388608,
+        "sha256": "877492af48c2dc95076e873ccc55ad9dd06186fa0b56c5fdcc4bd98e6a3e7928"
+      },
+      {
+        "url": "../data/v1/game-053.bin",
+        "size": 2083350,
+        "sha256": "8be22a661068b54e99f77d063fe9d103f22a326540a637fa2eef18a46a8f0815"
+      }
+    ]
+  },
+  "wine.zip": {
+    "size": 96910727,
+    "sha256": "4a3ff6df91496e0331887191e04a7dd86eedef2844854be889aeb4e2ccd5f885",
+    "parts": [
+      {
+        "url": "../data/v1/wine-000.bin",
+        "size": 8388608,
+        "sha256": "2b2282bf2382d288a6a7705c3f61a86a7b0c9223d0cc1170065d73789deb5a8b"
+      },
+      {
+        "url": "../data/v1/wine-001.bin",
+        "size": 8388608,
+        "sha256": "fd85c7c056d2ac16d15a76dcb80a73da00f358b63a9ad0c5d59d696f0463d463"
+      },
+      {
+        "url": "../data/v1/wine-002.bin",
+        "size": 8388608,
+        "sha256": "be47177da6e614e6556e342e77b45a112960ff013347c024f2ea43965b0da2b0"
+      },
+      {
+        "url": "../data/v1/wine-003.bin",
+        "size": 8388608,
+        "sha256": "861adc6ca1d6e02aafd883c2a5ce38d1ac64786fa521f6adc553634b0b043a9a"
+      },
+      {
+        "url": "../data/v1/wine-004.bin",
+        "size": 8388608,
+        "sha256": "32e4f8360368aab63a1d06d839cac8c90a52d6afaa56e8367fec422f6a7ce2a8"
+      },
+      {
+        "url": "../data/v1/wine-005.bin",
+        "size": 8388608,
+        "sha256": "74e944e95e45211517a2750b33dc08e879d805ffa6d498103489cb2ddf965ae9"
+      },
+      {
+        "url": "../data/v1/wine-006.bin",
+        "size": 8388608,
+        "sha256": "9f0364742d66e7da658500356c9eac3c58a2a82b3c4ed8629b8ba247c5c322c1"
+      },
+      {
+        "url": "../data/v1/wine-007.bin",
+        "size": 8388608,
+        "sha256": "abe0f679e27f27bb9683673007fc3d487f90cab8a802fdd6191e4f16186dd819"
+      },
+      {
+        "url": "../data/v1/wine-008.bin",
+        "size": 8388608,
+        "sha256": "63099f598ae60e63bfbe5708e6bb8da01c5430af1853ddf77f0bdaecff5bd5a1"
+      },
+      {
+        "url": "../data/v1/wine-009.bin",
+        "size": 8388608,
+        "sha256": "a0a0f32e27e70b031d4356c5df123625512e20a7fbd57bf751c80ca38f9c82b6"
+      },
+      {
+        "url": "../data/v1/wine-010.bin",
+        "size": 8388608,
+        "sha256": "2dee0a165a9a78798c22ac081ea78b1f07fb8d88f8c587185cbcf6c50ea1670b"
+      },
+      {
+        "url": "../data/v1/wine-011.bin",
+        "size": 4636039,
+        "sha256": "ae979b151cf37d0a1fb7f775de786b8f0f73759e771dc6dbdbcd16dc909ce317"
+      }
+    ]
+  },
+  "build": 3241924,
+  "fileCount": 26,
+  "version": "20261111-5"
+}
