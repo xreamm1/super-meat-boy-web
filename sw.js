@@ -1,4 +1,4 @@
-const CACHE='smb-shell-20261111-11';
+const CACHE='smb-shell-20261111-12';
 const DATA_CACHE='smb-assets-v1';
 const SCOPE=new URL('./',self.location.href).pathname;
 const SHELL=['./','index.html','style.css','app.js','storage.js','importer.js','input.js','fonts/pixel.ttf'];

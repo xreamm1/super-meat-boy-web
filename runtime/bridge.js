@@ -4,7 +4,7 @@ window.SMBRuntime={
  send(type,data={}){parent.postMessage({smb:true,type,...data},location.origin);},
  fail(message,error){this.send('error',{message,details:String(error?.stack||error||'')});},
  filesDone:0,
- manifest:fetch('../assets.json?v=11').then(r=>{if(!r.ok)throw Error('Манифест HTTP '+r.status);return r.json();}),
+ manifest:fetch('../assets.json?v=12').then(r=>{if(!r.ok)throw Error('Манифест HTTP '+r.status);return r.json();}),
  async loadFile(prefix,name,callback){const controller=new AbortController();try{const manifest=await this.manifest;const asset=manifest[name];if(!asset)throw Error('Неизвестный ресурс '+name);const bytes=new Uint8Array(asset.size);let end=0;const parts=asset.parts.map(part=>{const item={...part,start:end};end+=part.size;return item;});if(end!==asset.size)throw Error('Неверные размеры архива');let next=0,received=0;
  const worker=async()=>{while(next<parts.length){const part=parts[next++];const response=await fetch(part.url,{signal:controller.signal});if(!response.ok)throw Error(part.url+': HTTP '+response.status);let offset=part.start;const reader=response.body.getReader();for(;;){const {value,done}=await reader.read();if(done)break;if(offset+value.length>part.start+part.size)throw Error('Неверная длина '+part.url);bytes.set(value,offset);offset+=value.length;received+=value.length;this.send('download',{name,done:received,total:asset.size});}if(offset-part.start!==part.size)throw Error('Неполный файл '+part.url);const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes.subarray(part.start,offset)))].map(b=>b.toString(16).padStart(2,'0')).join('');if(hash!==part.sha256)throw Error('Ошибка целостности '+part.url);this.filesDone++;this.send('file-complete',{done:this.filesDone,total:manifest['game.zip'].parts.length+manifest['wine.zip'].parts.length+1});}};
  await Promise.all(Array.from({length:navigator.hardwareConcurrency>=8?2:1},worker));callback(bytes);}catch(e){controller.abort();this.fail('Не удалось подготовить ресурсы',e);}},
@@ -14,3 +14,10 @@ window.SMBRuntime={
 };
 window.addEventListener('message',async event=>{if(event.origin!==location.origin||event.source!==parent||!event.data?.smb)return;const m=event.data;try{if(m.type==='key'){const keys={ArrowLeft:['ArrowLeft',37],ArrowRight:['ArrowRight',39],ArrowUp:['ArrowUp',38],ArrowDown:['ArrowDown',40],Space:[' ',32],ShiftLeft:['Shift',16],Escape:['Escape',27]};if(!keys[m.code])return;const [key,keyCode]=keys[m.code];window.dispatchEvent(new KeyboardEvent(m.down?'keydown':'keyup',{key,code:m.code,keyCode,which:keyCode,bubbles:true,cancelable:true,shiftKey:m.code==='ShiftLeft'&&m.down}));}else if(m.type==='export'){await SMBRuntime.flush();SMBRuntime.send('save',{files:SMBRuntime.nativeSaves()});}else if(m.type==='flush'){await SMBRuntime.flush();SMBRuntime.send('flushed');}}catch(e){SMBRuntime.fail('Ошибка сохранения',e);}});
 window.addEventListener('pagehide',()=>SMBRuntime.flush().catch(()=>{}));
+
+const heldNativeKeys=new Map();
+window.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Space','ShiftLeft','ShiftRight','Escape'].includes(event.code))heldNativeKeys.set(event.code,{key:event.key,keyCode:event.keyCode,which:event.which});},true);
+window.addEventListener('keyup',event=>heldNativeKeys.delete(event.code),true);
+const releaseNativeKeys=()=>{for(const [code,key] of heldNativeKeys)window.dispatchEvent(new KeyboardEvent('keyup',{...key,code,bubbles:true,cancelable:true}));heldNativeKeys.clear();};
+window.addEventListener('blur',releaseNativeKeys);window.addEventListener('resize',releaseNativeKeys);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)releaseNativeKeys();});
