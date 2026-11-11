@@ -5,7 +5,12 @@ Module.printErr=function(...args){originalErr(...args);const line=args.join(' ')
 const originalInit=Module.onRuntimeInitialized;
 Module.onRuntimeInitialized=function(){originalInit?.();SMBRuntime.send('phase',{phase:'module'});};
 const originalBuild=buildBrowserFileSystem;
-buildBrowserFileSystem=async function(){try{const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('smb-local-v1',1);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});const pending=await new Promise((resolve,reject)=>{const tx=db.transaction('files');const r=tx.objectStore('files').get('pending-save');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});if(pending){await SMBRuntime.applySave(pending.files);await new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').delete('pending-save');tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});}db.close();SMBRuntime.send('phase',{phase:'saves'});originalBuild();}catch(e){SMBRuntime.fail('Не удалось восстановить сейв до запуска',e);}};
+buildBrowserFileSystem=async function(){let db;try{
+ const {openDB}=await import('../storage.js?v=14');db=await openDB();
+ const pending=await new Promise((resolve,reject)=>{const tx=db.transaction('files');const request=tx.objectStore('files').get('pending-save');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});
+ if(pending){await SMBRuntime.applySave(pending.files);await new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').delete('pending-save');tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Запись сейва прервана'));});}
+ SMBRuntime.send('phase',{phase:'saves'});originalBuild();
+ }catch(e){SMBRuntime.fail('Не удалось восстановить сейв до запуска',e);}finally{db?.close();}};
 Module.locateFile=(name)=>name;
 Module.onAbort=reason=>SMBRuntime.fail('Рантайм остановлен',reason);
 const fetchWasm=async()=>{try{const response=await fetch('boxedwine.wasm');if(!response.ok)throw Error('HTTP '+response.status);const total=4395227;const bytes=new Uint8Array(total);let done=0;const reader=response.body.getReader();for(;;){const r=await reader.read();if(r.done)break;bytes.set(r.value,done);done+=r.value.length;SMBRuntime.send('download',{name:'boxedwine.wasm',done,total});}if(done!==total)throw Error('Неполный модуль');SMBRuntime.filesDone++;const manifest=await SMBRuntime.manifest;SMBRuntime.send('file-complete',{done:SMBRuntime.filesDone,total:manifest['game.zip'].parts.length+manifest['wine.zip'].parts.length+1});return bytes;}catch(e){SMBRuntime.fail('Не удалось загрузить WASM',e);throw e;}};
