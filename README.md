@@ -2,9 +2,9 @@
 
 Original Super Meat Boy Steam Windows build 3241924 (game version 1.2.5), executed in a browser using the Boxedwine x86/Wine WebAssembly runtime. This is not a GameMaker HTML5 export or a gameplay recreation.
 
-Game and Wine archives download automatically in sequential 8 MiB parts. Every part is checked against the SHA-256 in `assets.json`. Versioned resources use a Cache-First service worker. The first preparation transfers approximately 523 MiB. The runtime keeps compressed archives in memory and lets Wine read their contents; it does not decode every audio resource in the shell.
+Game and Wine archives download automatically in 8 MiB parts (one download on smaller devices, at most two on devices reporting eight or more logical cores). Every part is checked against the SHA-256 in `assets.json`. Versioned resources use a Cache-First service worker. The first preparation transfers approximately 523 MiB. The runtime keeps compressed archives in memory and lets Wine read their contents; it does not decode every audio resource in the shell.
 
-The original Windows program uses Direct3D 9 and d3dx9_43. This deployment includes Boxedwine's WebGL-compatible WineD3D filesystem v30. The runtime is the single-threaded JIT build, because the multi-threaded candidate stalled during this game's initialization. The game retains its original timing and physics. Execution speed and memory requirements can still limit mobile devices.
+The original Windows program uses Direct3D 9 and d3dx9_43. This deployment includes Boxedwine's WebGL-compatible WineD3D filesystem v30. The runtime is the single-threaded JIT build, because the multi-threaded candidate stalled during this game's initialization. The game retains its original timing and physics. The default native render size is 960×540 (16:9); 1280×720 is available in settings. A redundant hidden-canvas copy is skipped only when the ST runtime already draws directly into the visible SDL canvas. Execution speed and memory requirements can still limit mobile devices.
 
 ## Controls
 
@@ -24,6 +24,6 @@ Storage persistence is requested, not guaranteed. Keep exported backups. A servi
 - Press Start 2P supports Cyrillic and is distributed under the SIL Open Font License; see [`fonts/OFL.txt`](fonts/OFL.txt).
 - Integration code is distributed under GPL-2.0, consistently with the adapted Boxedwine shell.
 
-`npm test` runs input-state and save-import validation checks. Browser QA is performed in the Codex in-app browser. A resized viewport is not a test on a physical iPhone or Android device. No complete-game or real-device audio compatibility claim is made.
+`npm test` runs input-state and save-import validation checks. Browser QA is performed in the Codex in-app browser. A resized viewport is not a test on a physical iPhone or Android device. No complete-game or real-device audio compatibility claim is made. During testing, slope clipping and unstable frame pacing were reported in the 1280×720 configuration; improvements to rendering overhead are being verified and are not a guarantee that every collision issue is resolved.
 
 Private Steam user data, existing progress and Steam account configuration are excluded from the public archive.
