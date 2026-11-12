@@ -29,3 +29,13 @@ test('chunked ZIP directory preserves entries and archive offsets',()=>{
  const entries=context.getZipEntries({chunked:true,length:bytes.length,read:(offset,length)=>bytes.slice(offset,offset+length)});
  assert.equal(entries[1].filename,'game/SuperMeatBoy.exe');assert.equal(entries[1].localHeaderOffset,29);
 });
+
+
+test('chunked filesystem reads work when createDataFile returns no node',()=>{
+ const node={stream_ops:{llseek(){return 12;}}};let created;
+ const context={Module:{print(){},printErr(){}},SMBRuntime:{logs:[],send(){}},getZipEntries(){},getEmulatorParams(){return [];},buildBrowserFileSystem(){},createFile(){},window:{addEventListener(){}},document:{addEventListener(){}},FS:{createDataFile(...args){created=args;},lookupPath(path){assert.equal(path,'/game.zip');return {node};}}};
+ vm.createContext(context);vm.runInContext(readFileSync(new URL('../runtime/bridge-ready.js',import.meta.url),'utf8'),context);
+ const bytes=Uint8Array.of(1,2,3,4);context.createFile('/','game.zip',{chunked:true,length:4,read:(start,length)=>bytes.slice(start,start+length)});
+ assert.equal(created[2].length,0);assert.equal(node.usedBytes,4);assert.equal(node.stream_ops.llseek(),12);
+ const target=new Uint8Array(6);assert.equal(node.stream_ops.read({},target,2,8,2),2);assert.deepEqual(Array.from(target),[0,0,3,4,0,0]);
+});
