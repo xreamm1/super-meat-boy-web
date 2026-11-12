@@ -6,7 +6,7 @@ const originalInit=Module.onRuntimeInitialized;
 Module.onRuntimeInitialized=function(){originalInit?.();SMBRuntime.send('phase',{phase:'module'});};
 const originalBuild=buildBrowserFileSystem;
 buildBrowserFileSystem=async function(){let db;try{
- const {openDB}=await import('../storage.js?v=14');db=await openDB();
+ const {openDB}=await import('../storage.js?v=15');db=await openDB();
  const pending=await new Promise((resolve,reject)=>{const tx=db.transaction('files');const request=tx.objectStore('files').get('pending-save');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});
  if(pending){await SMBRuntime.applySave(pending.files);await new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').delete('pending-save');tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Запись сейва прервана'));});}
  SMBRuntime.send('phase',{phase:'saves'});originalBuild();
@@ -29,3 +29,29 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)resumeAudi
 
 const nativeParameters=getEmulatorParams;
 getEmulatorParams=function(){const args=nativeParameters();const index=args.indexOf('/bin/wine');if(index>=0)args.splice(index,0,'-pollRate','0');return args;};
+
+// Keep archives in bounded chunks rather than a contiguous mobile allocation.
+const nativeZipEntries=getZipEntries;
+getZipEntries=function(data){
+ if(!data.chunked)return nativeZipEntries(data);
+ const tail=data.read(Math.max(0,data.length-65557),65557);
+ const view=new DataView(tail.buffer);let eocd=-1;
+ for(let i=tail.length-22;i>=0;i--)if(view.getUint32(i,true)===0x06054b50){eocd=i;break;}
+ if(eocd<0)throw Error('ZIP: отсутствует каталог');
+ const start=view.getUint32(eocd+16,true),directory=data.read(start,data.length-start);
+ const small=new Uint8Array(directory.length+1);small.set(directory,1);
+ const smallEnd=1+data.length-tail.length+eocd-start;
+ new DataView(small.buffer).setUint32(smallEnd+16,1,true);
+ return nativeZipEntries(small);
+};
+const nativeCreateFile=createFile;
+createFile=function(dir,name,data){
+ if(!data.chunked)return nativeCreateFile(dir,name,data);
+ const node=FS.createDataFile(dir,name,new Uint8Array(0),true,false,true);
+ node.usedBytes=data.length;
+ node.stream_ops={...node.stream_ops,
+  read(stream,buffer,offset,length,position){const bytes=data.read(position,length);buffer.set(bytes,offset);return bytes.length;},
+  write(){throw new FS.ErrnoError(63);},
+  mmap(stream,length,position){const ptr=Module._malloc(length);if(!ptr)throw new FS.ErrnoError(48);HEAPU8.set(data.read(position,length),ptr);return {ptr,allocated:true};}
+ };
+};

@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 test('Windows CRLF and NUL console records complete native initialization',()=>{
  const events=[];
- const context={Module:{print(){},printErr(){}},SMBRuntime:{logs:[],ready:false,send:(type,data)=>events.push({type,...data})},getEmulatorParams(){return ['/bin/wine'];},buildBrowserFileSystem(){},window:{addEventListener(){}},document:{addEventListener(){}}};
+ const context={Module:{print(){},printErr(){}},SMBRuntime:{logs:[],ready:false,send:(type,data)=>events.push({type,...data})},getZipEntries(){},createFile(){},getEmulatorParams(){return ['/bin/wine'];},buildBrowserFileSystem(){},window:{addEventListener(){}},document:{addEventListener(){}}};
  vm.createContext(context);
  vm.runInContext(readFileSync(new URL('../runtime/bridge-ready.js',import.meta.url),'utf8'),context);
  context.Module.print('Creating Texture Package: pc/Menus/portal.tp\r');
