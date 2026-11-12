@@ -6,7 +6,7 @@ const originalInit=Module.onRuntimeInitialized;
 Module.onRuntimeInitialized=function(){originalInit?.();SMBRuntime.send('phase',{phase:'module'});};
 const originalBuild=buildBrowserFileSystem;
 buildBrowserFileSystem=async function(){let db;try{
- const {openDB}=await import('../storage.js?v=15');db=await openDB();
+ const {openDB}=await import('../storage.js?v=16');db=await openDB();
  const pending=await new Promise((resolve,reject)=>{const tx=db.transaction('files');const request=tx.objectStore('files').get('pending-save');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});
  if(pending){await SMBRuntime.applySave(pending.files);await new Promise((resolve,reject)=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').delete('pending-save');tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Запись сейва прервана'));});}
  SMBRuntime.send('phase',{phase:'saves'});originalBuild();
@@ -47,7 +47,8 @@ getZipEntries=function(data){
 const nativeCreateFile=createFile;
 createFile=function(dir,name,data){
  if(!data.chunked)return nativeCreateFile(dir,name,data);
- const node=FS.createDataFile(dir,name,new Uint8Array(0),true,false,true);
+ FS.createDataFile(dir,name,new Uint8Array(0),true,false,true);
+ const node=FS.lookupPath(dir.replace(/\/$/,'')+'/'+name).node;
  node.usedBytes=data.length;
  node.stream_ops={...node.stream_ops,
   read(stream,buffer,offset,length,position){const bytes=data.read(position,length);buffer.set(bytes,offset);return bytes.length;},
